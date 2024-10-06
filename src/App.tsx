@@ -1,34 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
+import {useEffect, useState} from "react";
+import {Tasks} from "../types.ts";
+import {TaskCard} from "./components/TaskCard.tsx";
+import {Plus} from "react-bootstrap-icons";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [tasks, setTasks] = useState<Tasks | null>(null)
+
+  const fetchTasks = () => {
+    fetch("http://localhost:3001/api/tasks")
+      .then(response => response.json())
+      .then((data) => setTasks(data));
+  }
+  useEffect(() => {
+    fetchTasks();
+  }, [])
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+      <div className="container text-center">
+        <div className="row">
+          <div className="col-md-4">
+            <div className="card border-0 bg-dark-subtle">
+              <div className="card-body">
+                <div className="row">
+                  <h5 className="card-title text-start col-md-10">Upcoming</h5>
+                  <i className="bi bi-three-dots col-md-2"></i>
+                </div>
+                {tasks != null && (
+                  tasks.items.map((task) => (
+                    <TaskCard task={task} tasks={tasks} />
+                  ))
+                )}
+              </div>
+              <div className="d-flex flex-row">
+                <Plus/>
+                <p>Add another card</p>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-4">1</div>
+          <div className="col-md-4">1</div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
