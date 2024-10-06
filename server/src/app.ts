@@ -9,7 +9,6 @@ app.use(cors())
 
 app.get('/api/tasks', (req: Request, res: Response) => {
   res.json({
-    test: "chuj",
     items: [
       {
         category: Category.UPCOMING,

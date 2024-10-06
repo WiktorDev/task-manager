@@ -25,5 +25,8 @@ export type Checklist = {
   checked: boolean
 }
 export enum CategoryType {
-
+  IN_PROGRESS="IN_PROGRESS",
+  UPCOMING="UPCOMING",
+  DONE="DONE"
 }
+

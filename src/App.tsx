@@ -1,11 +1,9 @@
-
-import './App.css'
 import {useEffect, useState} from "react";
-import {Tasks} from "../types.ts";
-import {TaskCard} from "./components/TaskCard.tsx";
-import {Plus} from "react-bootstrap-icons";
+import {CategoryType, Tasks} from "../types.ts";
+import {Container, Row} from "react-bootstrap";
+import {CategoryCard} from "./components/CategoryCard.tsx";
 
-function App() {
+export default function App() {
   const [tasks, setTasks] = useState<Tasks | null>(null)
 
   const fetchTasks = () => {
@@ -18,34 +16,12 @@ function App() {
   }, [])
 
   return (
-    <div>
-      <div className="container text-center">
-        <div className="row">
-          <div className="col-md-4">
-            <div className="card border-0 bg-dark-subtle">
-              <div className="card-body">
-                <div className="row">
-                  <h5 className="card-title text-start col-md-10">Upcoming</h5>
-                  <i className="bi bi-three-dots col-md-2"></i>
-                </div>
-                {tasks != null && (
-                  tasks.items.map((task) => (
-                    <TaskCard task={task} tasks={tasks} />
-                  ))
-                )}
-              </div>
-              <div className="d-flex flex-row">
-                <Plus/>
-                <p>Add another card</p>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4">1</div>
-          <div className="col-md-4">1</div>
-        </div>
-      </div>
-    </div>
-  )
+    <Container>
+      <Row>
+        <CategoryCard category={CategoryType.UPCOMING} title="Do zrobienia" tasks={tasks}/>
+        <CategoryCard category={CategoryType.IN_PROGRESS} title="W trakcie" tasks={tasks}/>
+        <CategoryCard category={CategoryType.DONE} title="Skończone" tasks={tasks}/>
+      </Row>
+    </Container>
+  );
 }
-
-export default App
